@@ -1,24 +1,19 @@
 {
-  "name": "discount-ascii-warehouse",
-  "private": true,
+  "name": "discount-ascii-warehouse-frontend",
   "version": "0.2.0",
-  "description": "For all your ascii needs.",
-  "main": "index.js",
-  "scripts": {
-    "start": "node .",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "",
+  "description": "Discount Ascii Warehouse Frontend",
+  "author": "XTeam",
+  "license": "WTFGL",
   "dependencies": {
-    "cool-ascii-faces": "^1.3.4",
-    "ecstatic": "^1.4.0",
     "angular": "^1.6.2",
     "angular-animate": "^1.6.4",
     "angular-sanitize": "^1.6.4",
+    "angular-ui-bootstrap": "^2.5.0",
+    "angular-ui-notification": "^0.3.6",
     "angular-ui-router": "1.0.0-beta.3",
     "babel-preset-es2015": "^6.3.13",
     "babelify": "^7.2.0",
+    "browser-sync": "^2.11.1",
     "browserify": "^13.0.0",
     "browserify-ngannotate": "^2.0.0",
     "gulp": "^3.9.1",
@@ -32,10 +27,9 @@
     "vinyl-source-stream": "^1.1.0"
   },
   "devDependencies": {
-    "browser-sync": "^2.11.1",
     "gulp-clean": "^0.3.2",
     "gulp-concat": "^2.6.1",
-    "gulp-nodemon": "^2.2.1",
     "gulp-sass": "^3.1.0"
   }
 }
+
