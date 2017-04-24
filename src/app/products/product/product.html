@@ -1,5 +1,5 @@
 <div class='product'>
-  <span ng-bind="$ctrl.productItem.price"></span>
-  <span ng-bind="$ctrl.productItem.face"></span>
+  <span ng-bind="$ctrl.productItem.face" ng-style="{'font-size': $ctrl.productItem.size+'px'}"></span>
+  <span ng-bind="$ctrl.productItem.price / 100 | currency"></span>
   <span ng-bind="$ctrl.productItem.size"></span>
 </div>

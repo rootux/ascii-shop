@@ -7,16 +7,20 @@ class ProductsOverviewCtrl {
     this._$log = $log;
   }
 
-  getProducts() {
-    this._Products.get().then( res => {
-      // this.products = res; 
-    }, 
+  getProducts(skip = 0, limit = 10, sortBy = 'price') {
+    this._Products.get(skip, limit, sortBy).then( res => {
+    },
     err => {
       this._$log.error(err);
     },
     node => {
       this.products.push(node);
     });
+  }
+
+  handleOnSort(params) {
+    this.products = [];
+    this.getProducts(params.by);
   }
 }
 

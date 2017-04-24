@@ -11,5 +11,7 @@ productsModule.component('productsList', ProductsList);
 import ProductsOverview from './products-overview/products-overview.component';
 productsModule.component('productsOverview', ProductsOverview);
 
+import ProductsFilter from './products-filter/products-filter.component';
+productsModule.component('productsFilter', ProductsFilter);
 
 export default productsModule;

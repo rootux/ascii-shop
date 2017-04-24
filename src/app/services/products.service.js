@@ -7,9 +7,9 @@ export default class Products {
     this._DataStream = DataStream;
   }
 
-  get(skip = 0, limit = 10) {
+  get(skip = 0, limit = 10, sortBy) {
     var params = {
-      url: `${this._AppConstants.api}products`,
+      url: `${this._AppConstants.api}products?limit=${limit}&skip=${skip}&sort=${sortBy}`,
       pattern: '{id size price face}',
       // done: this.done
     };
