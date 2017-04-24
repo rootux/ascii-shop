@@ -1,4 +1,4 @@
-function AppRun(AppConstants, $rootScope, $location) {
+function AppRun(AppConstants, $rootScope) {
   'ngInject';
 
   $rootScope.$on('$stateChangeSuccess', (event, toState) => {

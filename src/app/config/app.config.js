@@ -4,13 +4,10 @@ function AppConfig($stateProvider, $urlRouterProvider) {
   $stateProvider
   .state('app', {
     abstract: true,
-    // templateUrl: 'layout/app-view.html',
-    controller: 'HomeCtrl',
-    controllerAs: '$ctrl',
-    templateUrl: '../home/home.html',
+    templateUrl: 'layout/app-view.html',
   });
 
-  $urlRouterProvider.otherwise('/404');
+  $urlRouterProvider.otherwise('/home');
 
 }
 

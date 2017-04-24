@@ -1,5 +1,5 @@
 class HomeCtrl {
-  constructor(AppConstants, $state) {
+  constructor() {
     'ngInject';
   }
 }

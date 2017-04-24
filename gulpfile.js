@@ -1,25 +1,27 @@
-var gulp          = require('gulp');
-var notify        = require('gulp-notify');
-var source        = require('vinyl-source-stream');
-var browserify    = require('browserify');
-var babelify      = require('babelify');
-var ngAnnotate    = require('browserify-ngannotate');
-var browserSync   = require('browser-sync').create();
-var rename        = require('gulp-rename');
-var templateCache = require('gulp-angular-templatecache');
-var uglify        = require('gulp-uglify');
-var merge         = require('merge-stream');
-var sass          = require('gulp-sass');
-var concat        = require('gulp-concat');
-var clean         = require('gulp-clean');
-var nodemon       = require('gulp-nodemon');
+const gulp          = require('gulp');
+const notify        = require('gulp-notify');
+const source        = require('vinyl-source-stream');
+const browserify    = require('browserify');
+const babelify      = require('babelify');
+const ngAnnotate    = require('browserify-ngannotate');
+const browserSync   = require('browser-sync').create();
+const rename        = require('gulp-rename');
+const templateCache = require('gulp-angular-templatecache');
+const uglify        = require('gulp-uglify');
+const jshint        = require('gulp-jshint');
+const stylish       = require('jshint-stylish');
+const sass          = require('gulp-sass');
+const concat        = require('gulp-concat');
+const clean         = require('gulp-clean');
+const nodemon       = require('gulp-nodemon');
+const sequence      = require('gulp-sequence');
 
-var jsFiles   = "src/app/**/*.js";
-var viewFiles = "src/app/**/*.html";
-var scssFiles = "src/app/**/*.scss";
+const jsFiles   = "src/app/**/*.js";
+const viewFiles = "src/app/**/*.html";
+const scssFiles = "src/app/**/*.scss";
 
-var interceptErrors = function(error) {
-  var args = Array.prototype.slice.call(arguments);
+let interceptErrors = function(error) {
+  let args = Array.prototype.slice.call(arguments);
 
   notify.onError({
     title: 'Compile Error',
@@ -56,28 +58,39 @@ gulp.task('views', function() {
       .pipe(gulp.dest('./src/app/config/'));
 });
 
+gulp.task('lint', function () {
+  return gulp.src('src/app/**/*.js')
+    .pipe(jshint({'esversion':6}))
+    .pipe(jshint.reporter(stylish));
+});
+
 gulp.task('copy:images', function () {
      return gulp
       .src('src/images/*.*')
       .pipe(gulp.dest('static/images'));
 });
 
+gulp.task('sass', function () {
+  return gulp.src('./src/app/**/*.scss')
+    .pipe(sass().on('error', sass.logError))
+    .pipe(gulp.dest('./static/tmp-scss/'));
+});
+
 gulp.task('concat:sass', function() {
-  return gulp.src('./src/**/*.scss')
-     .pipe(concat('all.scss'))
+  return gulp.src('./static/tmp-scss/**/*.css')
+     .pipe(concat('all.css'))
      .pipe(gulp.dest('./static/'));
 });
 
 gulp.task('sass:clean', function() {
-  return gulp.src('static/all.scss', {read: false})
-        .pipe(clean());
+  return gulp.src('./static/all.scss', {read: false})
+    .pipe(clean());
 })
 
-gulp.task('sass', function () {
-  return gulp.src('./static/*.scss')
-    .pipe(sass().on('error', sass.logError))
-    .pipe(gulp.dest('./static/'));
-});
+gulp.task('sass:cleantmp', function() {
+  return gulp.src('./static/tmp-scss/', {read: false})
+    .pipe(clean());
+})
 
 gulp.task('server', function (cb) {
   var started = false;
@@ -91,7 +104,11 @@ gulp.task('server', function (cb) {
   });
 });
 
-gulp.task('browser-sync', ['server'], function() {
+gulp.task('sass-sequence', function(callback) {
+  sequence('sass:clean', 'sass', 'concat:sass', 'sass:cleantmp')(callback)
+});
+
+gulp.task('watch', ['server'], function() {
   browserSync.init(null, {
     proxy: "http://localhost:8000",
         files: ["./static/**/*.*"],
@@ -101,12 +118,12 @@ gulp.task('browser-sync', ['server'], function() {
           port: 7001
         },
   });
-});
 
-
-gulp.task('default', ['browser-sync', 'html', 'browserify', 'concat:sass', 'sass', 'sass:clean', 'copy:images'], function() {
   gulp.watch("src/index.html", ['html']);
   gulp.watch(viewFiles, ['views']);
   gulp.watch(jsFiles, ['browserify']);
-  gulp.watch(scssFiles, ['concat:sass', 'sass', 'sass:clean']);
+  gulp.watch(scssFiles, ['sass-sequence']);
 });
+
+gulp.task('default', sequence(['html', 'browserify', 'lint', 'copy:images'],
+  'sass-sequence', 'watch'));

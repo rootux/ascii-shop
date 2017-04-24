@@ -38,3 +38,5 @@ jspm_packages
 
 # To prevent people from finding this repo
 README.md
+
+static/
