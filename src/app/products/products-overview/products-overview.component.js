@@ -1,10 +1,11 @@
 class ProductsOverviewCtrl {
-  constructor(Products, $log) {
+  constructor(Products, $log, AppConstants) {
     'ngInject';
     this._Products = Products;
     this.products = [];
     this.getProducts();
     this._$log = $log;
+    this.numberOfProducsToLoad = AppConstants.numberOfProducsToLoad;
   }
 
   getProducts(skip = 0, limit = 10, sortBy = 'price') {
@@ -20,7 +21,7 @@ class ProductsOverviewCtrl {
 
   handleOnSort(params) {
     this.products = [];
-    this.getProducts(params.by);
+    this.getProducts(0, this.numberOfProducsToLoad, params.sortBy);
   }
 }
 

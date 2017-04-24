@@ -1,6 +1,8 @@
 class ProductsFilterCtrl {
   constructor() {
     'ngInject';
+
+    this.sortBy = 'price';
   }
 }
 
