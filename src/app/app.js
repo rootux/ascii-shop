@@ -14,6 +14,7 @@ import './home';
 import './services';
 import './products';
 import './filters';
+import './components';
 
 const requires = [
   'ui.router',
@@ -24,6 +25,7 @@ const requires = [
   'app.products',
   'app.home',
   'app.filters',
+  'app.components',
   'app.services',
 ];
 

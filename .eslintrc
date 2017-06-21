@@ -1,0 +1,38 @@
+{
+  "extends": "eslint:recommended",
+  "env": {
+    "node": true,
+    "es6": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2017,
+    "sourceType": "module"
+  },
+  "rules": {
+    "indent": [
+      "error",
+      2,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "comma-dangle": [
+      "error",
+      {
+        "arrays" : "only-multiline",
+        "objects" : "only-multiline",
+        "imports" : "only-multiline",
+        "functions": "never"
+      }
+    ],
+    "no-param-reassign": 0,
+    "no-unused-expressions": [
+      "error",
+      {
+        "allowShortCircuit": true,
+        "allowTernary": true
+      }
+    ],
+    "no-use-before-define": "off"
+  }
+}

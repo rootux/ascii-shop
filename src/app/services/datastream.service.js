@@ -8,29 +8,24 @@ export default class DataStream {
   }
 
   get(params) {
+    // TODO - use ES2015 Promise
     let defer = this._$q.defer();
     oboe(params)
-    .start(begin)
-    .fail(error)
-    .node(params.pattern, stream)
-    .done(complete);
+      .start(begin)
+      .fail(error)
+      .node(params.pattern, stream);
 
     function begin(status) {
       if (typeof params.start === 'function' && status === 200) {
-          params.start(stream);
+        params.start(stream);
       }
-    }
-
-    function complete() {
-      if (typeof params.done === 'function') {
-        params.done();
-      }
-      // make sure oboe cleans up memory
-      return oboe.drop;
     }
 
     function error(err) {
       defer.reject(err);
+      
+      // make sure oboe cleans up memory
+      return oboe.drop;
     }
 
     function stream(n) {

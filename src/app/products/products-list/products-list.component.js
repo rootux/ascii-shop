@@ -8,7 +8,8 @@ let ProductsList= {
   controller: ProductsListCtrl,
   templateUrl: 'products/products-list/products-list.html',
   bindings: {
-    products: '<'
+    products: '<',
+    onLoadMoreProducts: '&'
   }
 };
 

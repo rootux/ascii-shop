@@ -1,4 +1,4 @@
 <div>
   <products-filter on-sort='$ctrl.handleOnSort({sortBy})'></products-filter>
-  <products-list products='$ctrl.products'></posts-list>
+  <products-list products='$ctrl.products' on-load-more-products='$ctrl.loadMoreProducts()'></posts-list>
 </div>

@@ -10,7 +10,7 @@ export default (moment) => {
         }
 
         function isMoreThenOneWeek(inputInMoment) {
-            return inputInMoment.isBefore(moment().day(-7));
+            return inputInMoment.isBefore(moment().subtract(7, 'day'));
         }
     };
 }

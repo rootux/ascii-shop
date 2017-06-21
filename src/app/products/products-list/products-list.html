@@ -1,1 +1,3 @@
-<product ng-repeat="product in $ctrl.products" product-item="product" class='col-xs-3'>
+<div class='products-container' on-scroll-to-bottom='$ctrl.onLoadMoreProducts()'>
+  <product ng-repeat="product in $ctrl.products" product-item="product" class='col-xs-3' />
+</div>
