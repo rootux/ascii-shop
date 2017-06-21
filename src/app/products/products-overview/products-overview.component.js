@@ -7,17 +7,24 @@ class ProductsOverviewCtrl {
     this.numberOfProducsToLoad = AppConstants.numberOfProducsToLoad;
     this.skip = 0;
     this.sortBy = AppConstants.defaultProductsSortBy;
+    this.isLoading = false;
     this.getProducts();
   }
 
   getProducts(skip = this.skip, limit = this.numberOfProducsToLoad, sortBy = this.sortBy) {
-    this._Products.get(skip, limit, sortBy).then( res => {
+    this.isLoading = true;
+    this._Products.get(skip, limit, sortBy).then( () => {
     },
     err => {
+      this.isLoading = false;
       this._$log.error(err);
     },
     node => {
-      this.products.push(node);
+      if(node.isFinishedLoading) {
+        this.isLoading = false; 
+      }else {
+        this.products.push(node);
+      }
     });
   }
 
@@ -29,7 +36,8 @@ class ProductsOverviewCtrl {
 
   handleOnSort(params) {
     this.products = [];
-    this.lastSortBy = params.sortBy;
+    this.sortBy = params.sortBy;
+    this.skip = 0;
     this.getProducts();
   }
 }

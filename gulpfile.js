@@ -7,7 +7,6 @@ const ngAnnotate    = require('browserify-ngannotate');
 const browserSync   = require('browser-sync').create();
 const rename        = require('gulp-rename');
 const templateCache = require('gulp-angular-templatecache');
-const uglify        = require('gulp-uglify');
 const jshint        = require('gulp-jshint');
 const stylish       = require('jshint-stylish');
 const sass          = require('gulp-sass');
@@ -34,28 +33,28 @@ let interceptErrors = function(error) {
 
 gulp.task('browserify', ['views'], function() {
   return browserify('./src/app/app.js')
-      .transform(babelify, {presets: ["es2015"]})
-      .transform(ngAnnotate)
-      .bundle()
-      .on('error', interceptErrors)
-      .pipe(source('main.js'))
-      .pipe(gulp.dest('./static/'));
+    .transform(babelify, {presets: ["es2015"]})
+    .transform(ngAnnotate)
+    .bundle()
+    .on('error', interceptErrors)
+    .pipe(source('main.js'))
+    .pipe(gulp.dest('./static/'));
 });
 
 gulp.task('html', function() {
   return gulp.src("src/index.html")
-      .on('error', interceptErrors)
-      .pipe(gulp.dest('./static/'));
+    .on('error', interceptErrors)
+    .pipe(gulp.dest('./static/'));
 });
 
 gulp.task('views', function() {
   return gulp.src(viewFiles)
-      .pipe(templateCache({
-        standalone: true
-      }))
-      .on('error', interceptErrors)
-      .pipe(rename("app.templates.js"))
-      .pipe(gulp.dest('./src/app/config/'));
+    .pipe(templateCache({
+      standalone: true
+    }))
+    .on('error', interceptErrors)
+    .pipe(rename("app.templates.js"))
+    .pipe(gulp.dest('./src/app/config/'));
 });
 
 gulp.task('lint', function () {
@@ -65,9 +64,9 @@ gulp.task('lint', function () {
 });
 
 gulp.task('copy:images', function () {
-     return gulp
-      .src('src/images/*.*')
-      .pipe(gulp.dest('static/images'));
+  return gulp
+    .src('src/images/*.*')
+    .pipe(gulp.dest('static/images'));
 });
 
 gulp.task('sass', function () {
@@ -78,8 +77,8 @@ gulp.task('sass', function () {
 
 gulp.task('concat:sass', function() {
   return gulp.src('./static/tmp-scss/**/*.css')
-     .pipe(concat('all.css'))
-     .pipe(gulp.dest('./static/'));
+    .pipe(concat('all.css'))
+    .pipe(gulp.dest('./static/'));
 });
 
 gulp.task('sass:clean', function() {
@@ -111,12 +110,12 @@ gulp.task('sass-sequence', function(callback) {
 gulp.task('watch', ['server'], function() {
   browserSync.init(null, {
     proxy: "http://localhost:8000",
-        files: ["./static/**/*.*"],
-        notify: false,
-        port: 7000,
-        ui: {
-          port: 7001
-        },
+    files: ["./static/**/*.*"],
+    notify: false,
+    port: 7000,
+    ui: {
+      port: 7001
+    },
   });
 
   gulp.watch("src/index.html", ['html']);
@@ -127,3 +126,6 @@ gulp.task('watch', ['server'], function() {
 
 gulp.task('default', sequence(['html', 'browserify', 'lint', 'copy:images'],
   'sass-sequence', 'watch'));
+
+gulp.task('build', sequence(['html', 'browserify', 'lint', 'copy:images'],
+  'sass-sequence'));

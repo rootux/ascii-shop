@@ -1,4 +1,5 @@
 <div>
-  <products-filter on-sort='$ctrl.handleOnSort({sortBy})'></products-filter>
-  <products-list products='$ctrl.products' on-load-more-products='$ctrl.loadMoreProducts()'></posts-list>
+  <products-filter on-sort='$ctrl.handleOnSort({sortBy})'></products-filter>  
+  <products-list products='$ctrl.products' on-load-more-products='$ctrl.loadMoreProducts()'></products-list>
+  <span ng-if="$ctrl.isLoading">Loading products...</span>
 </div>

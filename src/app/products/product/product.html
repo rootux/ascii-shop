@@ -1,5 +1,8 @@
 <div class='product'>
-  <span ng-bind="$ctrl.productItem.face" ng-style="{'font-size': $ctrl.productItem.size+'px'}"></span>
-  <span ng-bind="$ctrl.productItem.price / 100 | currency"></span>
-  <span ng-bind="$ctrl.productItem.date | timeAgo"></span>
+  <ad ng-if="$ctrl.isAd"></ad>
+  <div ng-if="!$ctrl.isAd">
+    <span class='face' ng-bind="$ctrl.productItem.face" ng-style="{'font-size': $ctrl.productItem.size+'px'}"></span>
+    <span class='currency' ng-bind="$ctrl.productItem.price / 100 | currency"></span>
+    <span class='timeago' ng-bind="$ctrl.productItem.date | timeAgo"></span>
+  </div>
 </div>

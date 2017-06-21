@@ -1,7 +1,7 @@
 const AppConstants = {
   appName: 'Discount Ascii Warehouse',
-  api: 'http://localhost:7000/api/',
-  numberOfProducsToLoad: 10,
+  api: `//${window.location.hostname}:${window.location.port}/api/`,
+  numberOfProducsToLoad: 16,
   defaultProductsSortBy: 'price',
 };
 

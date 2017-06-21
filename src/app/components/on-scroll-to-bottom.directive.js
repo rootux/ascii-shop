@@ -18,7 +18,7 @@ function OnScrollToBottom() {
         if ((el.scrollHeight - el.scrollTop) <= clientHeight + spacing) {
           let now = new Date().getTime();
           if(now - last > delayBetweenCalls) {
-            last = now; 
+            last = now;
             scope.$apply(fn);
           }
         }

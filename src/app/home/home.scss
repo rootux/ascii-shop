@@ -1,9 +1,11 @@
 
-html, body, {
-  margin: 4em;
-  padding: 4em;
+html{
+  margin: 2em;
+  padding: 2em;
   height: 100%;
-  font-size: 14px;
-  color: black;
   line-height: 18px;
+}
+
+.main, header {
+  font-size: 20px;
 }

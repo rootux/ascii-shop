@@ -13,6 +13,7 @@ import './layout';
 import './home';
 import './services';
 import './products';
+import './ads';
 import './filters';
 import './components';
 
@@ -23,6 +24,7 @@ const requires = [
   'templates',
   'app.layout',
   'app.products',
+  'app.ads',
   'app.home',
   'app.filters',
   'app.components',

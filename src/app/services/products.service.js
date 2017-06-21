@@ -29,7 +29,6 @@ export default class Products {
 
     let deferred = this._$q.defer();
 
-    // Unload buffer
     // TODO check all buffer race condition - for example - buffer is half full
     if(skip == this.lastSkip && this.buffer.length > 0) {
       this._$log.info("unload buffer and load more");
@@ -56,18 +55,32 @@ export default class Products {
     },
     node => {
       this.loadedItems++;
-      if(!isForBuffer) {
+      if(isForBuffer) {
+        this.buffer.push(node);
+      }else {
         deferred.notify(node);
       }
       
-      // Check if should load more items
-      if(this.loadedItems == this.lastLimit) {
-        this._$log.info(`Loading next buffer`);
-        return this.get(this.lastSkip + this.lastLimit, this.lastLimit, this.lastSortBy, true);
-      }
+      this.shouldLoadMoreItems(deferred, isForBuffer);
     });
 
     return deferred.promise;
+  }
+
+  shouldLoadMoreItems(deferred, isForBuffer) {
+    if(this.loadedItems != this.lastLimit) {
+      return;
+    }
+    
+    this.loadedItems = 0;
+    if(isForBuffer) {
+      this._$log.info('Second load for Buffer has finished');
+      return;
+    }else {
+      deferred.notify({isFinishedLoading: true});
+    }
+    this._$log.info(`Loading next buffer`);
+    return this.get(this.lastSkip + this.lastLimit, this.lastLimit, this.lastSortBy, true);
   }
 
 

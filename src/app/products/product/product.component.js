@@ -9,6 +9,7 @@ let Product = {
   templateUrl: 'products/product/product.html',
   bindings: {
     productItem: '<',
+    isAd: '<',
   }
 };
 
