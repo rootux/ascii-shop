@@ -13,7 +13,9 @@ class ProductsOverviewCtrl {
 
   getProducts(skip = this.skip, limit = this.numberOfProducsToLoad, sortBy = this.sortBy) {
     this.isLoading = true;
-    this._Products.get(skip, limit, sortBy).then( () => {
+    this._Products.get(skip, limit, sortBy).then( res => {
+      res.forEach(p => { this.products.push(p); });
+      this.isLoading = false;
     },
     err => {
       this.isLoading = false;

@@ -14,26 +14,22 @@ export default class Products {
     this.loadedItems = 0;
     this.lastLimit = -1;
     this.lastSkip = -1;
-    this.lastSortBy;
-  }
-
-  clearBuffer() {
-    this.buffer = [];
+    this.lastSortBy = null;
   }
 
   get(skip, limit, sortBy, isForBuffer = false) {
+    this._$log.debug(`get products ${skip} ${limit} ${sortBy}`);
     if(sortBy != this.lastSortBy) {
-      this.clearBuffer();
+      this._clearBuffer();
     }
-    this._$log.info(`get products ${skip} ${limit} ${sortBy}`);
 
     let deferred = this._$q.defer();
 
     // TODO check all buffer race condition - for example - buffer is half full
-    if(skip == this.lastSkip && this.buffer.length > 0) {
-      this._$log.info("unload buffer and load more");
+    if(this._isRequestAlreadyCached(skip)) {
+      this._$log.debug("unload buffer and load more");
       deferred.resolve(this.buffer);
-      this.clearBuffer();
+      this._clearBuffer();
       skip = limit + skip;
     }
 
@@ -41,9 +37,21 @@ export default class Products {
     this.lastSkip = skip;
     this.lastSortBy = sortBy;
     
-    this._$log.info(`after get products ${skip} ${limit} ${sortBy}`);
-    
-    var params = {
+    this._getFromDataStream(skip, limit, sortBy, isForBuffer, deferred);
+
+    return deferred.promise;
+  }
+
+  _clearBuffer() {
+    this.buffer = [];
+  }
+
+  _isRequestAlreadyCached(skip) {
+    return (skip == this.lastSkip && this.buffer.length > 0);
+  }
+
+  _getFromDataStream(skip, limit, sortBy, isForBuffer, deferred) {
+    let params = {
       url: `${this._AppConstants.api}products?limit=${limit}&skip=${skip}&sort=${sortBy}`,
       pattern: PRODUCT_PATTERN,
       cache: true
@@ -61,25 +69,23 @@ export default class Products {
         deferred.notify(node);
       }
       
-      this.shouldLoadMoreItems(deferred, isForBuffer);
+      this._shouldLoadMoreItems(deferred, isForBuffer);
     });
-
-    return deferred.promise;
   }
 
-  shouldLoadMoreItems(deferred, isForBuffer) {
+  _shouldLoadMoreItems(deferred, isForBuffer) {
     if(this.loadedItems != this.lastLimit) {
       return;
     }
     
     this.loadedItems = 0;
     if(isForBuffer) {
-      this._$log.info('Second load for Buffer has finished');
+      this._$log.debug('Second load for Buffer has finished');
       return;
     }else {
       deferred.notify({isFinishedLoading: true});
     }
-    this._$log.info(`Loading next buffer`);
+    this._$log.debug(`Loading next buffer`);
     return this.get(this.lastSkip + this.lastLimit, this.lastLimit, this.lastSortBy, true);
   }
 
