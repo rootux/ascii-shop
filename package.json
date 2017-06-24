@@ -5,6 +5,7 @@
   "description": "For all your ascii needs.",
   "main": "index.js",
   "scripts": {
+    "postinstall": "cd src && npm install",
     "start": "node .",
     "build": "gulp build",
     "test": "echo \"Error: no test specified\" && exit 1"
